@@ -1,0 +1,17 @@
+usuarioId,nombre,edad,sexo,email,fechaNacimiento
+U01,Carlos Andrés Gómez,23,M,carlos.gomez@correo.com,2003-04-12
+U02,Laura Sofía Martínez,22,F,laura.martinez@correo.com,2004-08-19
+U03,Mateo Alejandro López,25,M,mateo.lopez@correo.com,2001-02-25
+U04,Valentina Herrera Ruiz,21,F,valentina.herrera@correo.com,2005-06-10
+U05,Santiago Castro Pérez,24,M,santiago.castro@correo.com,2002-09-03
+U06,Camila Torres Vargas,26,F,camila.torres@correo.com,2000-01-15
+U07,Diego Fernando Ramírez,27,M,diego.ramirez@correo.com,1999-07-22
+U08,Mariana Morales Ortiz,23,F,mariana.morales@correo.com,2003-10-30
+U09,Alex Rivera Mendoza,24,Otro,alex.rivera@correo.com,2002-03-18
+U10,Sebastián Rojas Silva,28,M,sebastian.rojas@correo.com,1998-05-09
+U11,Paula Andrea Díaz,22,F,paula.diaz@correo.com,2004-11-01
+U12,Lucas Ezequiel Fernández,29,M,lucas.fernandez@correo.com,1997-04-27
+U13,Sofía Isabel Navarro,25,,sofia.navarro@correo.com,2001-08-14
+U14,Andrés Felipe Moreno,30,M,andres.moreno@correo.com,1996-06-05
+U15,Isabella Jiménez Cruz,21,F,isabella.jimenez@correo.com,2005-03-21
+U16,Nicolás Eduardo Peña,26,M,nicolas.pena@correo.com,2000-10-11

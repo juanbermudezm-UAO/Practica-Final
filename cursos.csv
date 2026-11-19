@@ -1,0 +1,17 @@
+cursoId,titulo,descripcion,nivel,anioPublicacion,calificacionPromedio
+C01,Fundamentos de Python,Introducción práctica a la programación estructurada y orientada a objetos con Python,Básico,2024,4.75
+C02,Estructuras de Datos en Java,Implementación y análisis de listas árboles y grafos en Java,Intermedio,2024,4.5
+C03,Algoritmos Avanzados y Complejidad,Técnicas de programación dinámica grafos y optimización algorítmica,Avanzado,2025,4.0
+C04,Análisis de Datos con Python,Manipulación limpieza y visualización de datos con Pandas y Matplotlib,Básico,2024,4.0
+C05,Machine Learning Aplicado,Modelos supervisados y no supervisados para predicción y clasificación,Intermedio,2025,5.0
+C06,Deep Learning con PyTorch,Construcción y entrenamiento de redes neuronales profundas,Avanzado,2026,4.0
+C07,Bases de Datos Orientadas a Grafos con Neo4j,Modelado de grafos y lenguaje de consultas Cypher en Neo4j,Intermedio,2025,4.5
+C08,Diseño y Optimización de Bases de Datos SQL,Modelado relacional normalización e indexación avanzada en SQL,Intermedio,2023,5.0
+C09,Estrategias de SEO y SEM,Optimización en motores de búsqueda y campañas publicitarias digitales,Básico,2024,4.0
+C10,Analítica Web y Conversión,Medición de tráfico digital embudos de conversión y métricas clave,Intermedio,2025,0.0
+C11,Procesamiento de Lenguaje Natural,Técnicas modernas para análisis de texto y modelos de lenguaje,Avanzado,2026,0.0
+C12,Desarrollo Frontend con Angular,Creación de aplicaciones web reactivas con TypeScript y Angular,Intermedio,2025,0.0
+C13,Fundamentos de Ciberseguridad,Principios de seguridad informática criptografía y análisis de vulnerabilidades,Básico,2024,0.0
+C14,Diseño de Experiencia de Usuario UX,Investigación de usuarios prototipado y pruebas de usabilidad,Básico,2023,0.0
+C15,Gestión Ágil con Scrum,Marco de trabajo Scrum roles artefactos y planificación de sprints,Básico,2024,0.0
+C16,Arquitectura en la Nube con AWS,Diseño de infraestructuras escalables y seguras en Amazon Web Services,Avanzado,2025,0.0
