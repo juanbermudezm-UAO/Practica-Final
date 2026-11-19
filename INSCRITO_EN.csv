@@ -1,0 +1,21 @@
+usuarioId,cursoId,fechaInicio,fechaFin,progreso,estado
+U01,C01,2026-01-15,2026-02-20,100,Completado
+U01,C02,2026-03-01,,60,En progreso
+U01,C04,2026-05-10,,40,En progreso
+U02,C01,2026-02-01,2026-03-10,100,Completado
+U02,C02,2026-03-20,2026-05-12,100,Completado
+U02,C07,2026-06-01,,50,En progreso
+U03,C07,2026-06-10,,30,En progreso
+U03,C08,2026-03-15,2026-04-28,100,Completado
+U03,C04,2026-04-01,,20,Abandonado
+U04,C07,2026-07-01,,75,En progreso
+U04,C01,2026-03-10,,45,En progreso
+U05,C07,2026-07-15,,65,En progreso
+U05,C03,2026-05-20,,35,En progreso
+U06,C07,2026-08-01,,80,En progreso
+U06,C09,2026-08-15,,50,En progreso
+U07,C01,2026-04-01,2026-05-01,100,Completado
+U08,C05,2026-06-15,2026-07-20,100,Completado
+U09,C06,2026-07-05,,55,En progreso
+U10,C04,2026-06-20,,70,En progreso
+U11,C10,2026-09-01,,25,Abandonado
