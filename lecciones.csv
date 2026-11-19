@@ -1,0 +1,21 @@
+leccionId,titulo,descripcion,duracionMin,numero
+L01,Instalación y Primer Programa en Python,Configuración del entorno de desarrollo y ejecución del primer script,15,1
+L02,Variables Tipos de Datos y Operadores,Uso de tipos primitivos cadenas y operadores aritméticos y lógicos,20,2
+L03,Listas Tuplas y Diccionarios,Manejo de colecciones integradas y operaciones principales,25,3
+L04,Condicionales y Bucles en Python,Estructuras de decisión if else y ciclos for y while,22,1
+L05,Definición de Funciones y Módulos,Creación de funciones reutilizables parámetros y alcance de variables,28,2
+L06,Clases Objetos y Atributos,Conceptos fundamentales de orientación a objetos en Python,30,1
+L07,Herencia y Polimorfismo,Reutilización de código mediante jerarquías de clases,35,2
+L08,Listas Enlazadas Simples y Dobles,Implementación desde cero de nodos y punteros en Java,30,1
+L09,Pilas y Colas con Arreglos y Nodos,Operaciones LIFO y FIFO y sus aplicaciones prácticas,25,2
+L10,Recorridos en Árboles Binarios de Búsqueda,Algoritmos preorden inorden y postorden en Java,32,1
+L11,Memoización y Tabulación,Optimización de problemas recursivos mediante programación dinámica,40,1
+L12,Algoritmo de Dijkstra y Bellman Ford,Cálculo de rutas más cortas en grafos ponderados,38,1
+L13,Series y DataFrames en Pandas,Carga filtrado y transformación de conjuntos de datos tabulares,26,1
+L14,Gráficos Estadísticos con Matplotlib,Creación de histogramas diagramas de dispersión y líneas,24,1
+L15,Regresión Lineal y Logística,Entrenamiento y evaluación de modelos predictivos básicos,34,1
+L16,Nodos Relaciones y Propiedades en Neo4j,Sintaxis CREATE MATCH y WHERE en lenguaje Cypher,28,1
+L17,Patrones de Recomendación en Grafos,Filtrado colaborativo y rutas de afinidad en Cypher,36,1
+L18,Formas Normales 1FN 2FN y 3FN,Eliminación de redundancias y anomalías en esquemas relacionales,30,1
+L19,Investigación de Palabras Clave,Herramientas y criterios para seleccionar términos de búsqueda,20,1
+L20,Perceptrón Multicapa y Retropropagación,Funcionamiento interno del entrenamiento de redes neuronales,42,1

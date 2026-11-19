@@ -1,0 +1,19 @@
+moduloId,titulo,numero
+M01,Introducción y Sintaxis Básica de Python,1
+M02,Estructuras de Control y Funciones,2
+M03,Programación Orientada a Objetos en Python,3
+M04,Estructuras Lineales Listas Pilas y Colas,1
+M05,Árboles Binarios y Grafos,2
+M06,Programación Dinámica y Algoritmos Voraces,1
+M07,Flujos Máximos y Caminos Mínimos,2
+M08,Introducción a NumPy y Pandas,1
+M09,Visualización Exploratoria de Datos,2
+M10,Regresión y Clasificación Supervisada,1
+M11,Fundamentos de Grafos y Cypher Básico,1
+M12,Consultas Avanzadas y Recomendaciones en Neo4j,2
+M13,Modelado Entidad Relación y Normalización,1
+M14,Posicionamiento Orgánico SEO,1
+M15,Arquitectura de Redes Neuronales Profundas,1
+M16,Componentes y Servicios en Angular,1
+M17,Criptografía y Seguridad en Redes,1
+M18,Principios de Usabilidad y Prototipado,1
