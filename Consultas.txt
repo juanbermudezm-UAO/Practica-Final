@@ -1,0 +1,263 @@
+Consultas Requeridas:
+
+Nota: los valores usados como ejemplo (usuarioId "U01", cursoId "C02", país "Colombia")
+existen en los CSV cargados. Para consultar otro caso basta con cambiar ese valor.
+
+
+1. ¿Cuál es la categoría que más ha cursado un usuario?
+Identificar los intereses temáticos predominantes de un usuario en función de las categorías
+de los cursos en los que está inscrito. Permite analizar preferencias de aprendizaje y
+segmentar usuarios según sus áreas de formación más frecuentes (p. ej. Programación,
+Ciencia de Datos, Diseño).
+
+Solución:
+
+Opción 1: Para un usuario específico
+
+MATCH (u:Usuario {usuarioId: "U01"})-[:INSCRITO_EN]->(c:Curso)-[:PERTENECE_A]->(cat:Categoria)
+WITH u, cat, count(*) AS totalCursos
+WITH u, max(totalCursos) AS maximoCursos
+MATCH (u)-[:INSCRITO_EN]->(c:Curso)-[:PERTENECE_A]->(cat:Categoria)
+WITH u, cat, maximoCursos, count(*) AS totalCursos
+WHERE totalCursos = maximoCursos
+RETURN u.nombre AS usuario,
+       cat.nombre AS categoria,
+       totalCursos;
+
+Opción 2: Para cada uno de los usuarios
+
+MATCH (u:Usuario)-[:INSCRITO_EN]->(c:Curso)-[:PERTENECE_A]->(cat:Categoria)
+WITH u, cat, count(*) AS totalCursos
+WITH u, max(totalCursos) AS maximoCursos
+MATCH (u)-[:INSCRITO_EN]->(c:Curso)-[:PERTENECE_A]->(cat:Categoria)
+WITH u, cat, maximoCursos, count(*) AS totalCursos
+WHERE totalCursos = maximoCursos
+RETURN u.nombre AS usuario,
+       cat.nombre AS categoria,
+       totalCursos
+ORDER BY usuario, categoria;
+
+Etapas realizadas:
+1. El primer MATCH recorre los cursos en los que está inscrito el usuario y la categoría de cada curso.
+2. El primer WITH agrupa por usuario y categoría; count(*) cuenta cuántos cursos tiene en cada categoría.
+3. El segundo WITH obtiene, por usuario, el mayor número de cursos en una misma categoría (max).
+4. El segundo MATCH vuelve a recorrer las inscripciones para contar nuevamente por categoría.
+5. WHERE conserva solo la categoría o categorías cuyo total es igual al máximo (si hay empate, se muestran todas).
+6. RETURN muestra el usuario, la categoría predominante y el total de cursos.
+
+
+2. ¿Qué lecciones de un curso específico ha visto un usuario inscrito?
+Evaluar el progreso individual del estudiante dentro de un curso en particular, verificando
+qué lecciones ha reproducido y cuáles ha completado.
+Es útil para generar reportes de avance, seguimiento de aprendizaje y detectar puntos de
+abandono en la ruta formativa.
+
+Solución:
+
+MATCH (u:Usuario {usuarioId: "U01"})-[:INSCRITO_EN]->(c:Curso {cursoId: "C02"})
+      -[R1:ESTA_COMPUESTO]->(m:Modulo)-[R2:CONTIENE]->(l:Leccion),
+      (u)-[v:VIO]->(l)
+RETURN u.nombre AS usuario,
+       c.titulo AS curso,
+       R1.orden AS ordenModulo,
+       m.titulo AS modulo,
+       R2.orden AS ordenLeccion,
+       l.titulo AS leccion,
+       v.fecha AS fechaVisualizacion,
+       v.minutosReproducidos AS minutosReproducidos,
+       CASE
+           WHEN v.finalizado = true THEN "Completada"
+           ELSE "No completada"
+       END AS estadoLeccion
+ORDER BY ordenModulo, ordenLeccion;
+
+Etapas realizadas:
+1. MATCH verifica que el usuario esté inscrito en el curso indicado y recorre sus módulos y lecciones.
+2. El patrón (u)-[v:VIO]->(l) deja solo las lecciones del curso que el usuario ha reproducido.
+3. CASE traduce la propiedad finalizado (true/false) a "Completada" o "No completada".
+4. RETURN muestra el curso, el módulo, la lección, la fecha, los minutos reproducidos y su estado.
+5. ORDER BY ordena según la posición del módulo dentro del curso y de la lección dentro del módulo.
+
+
+3. ¿Cuál es el curso más popular en un país determinado?
+Determinar el curso más popular en un contexto geográfico específico, basado en el número
+de inscripciones de usuarios residentes en ese país.
+Sirve para analizar tendencias regionales de aprendizaje, preferencias por temática o
+idioma, y orientar estrategias de oferta educativa local.
+
+Solución:
+
+MATCH (u:Usuario)-[:RESIDE_EN]->(p:Pais {nombre: "Colombia"}),
+      (u)-[:INSCRITO_EN]->(c:Curso)
+WITH p, c, count(*) AS totalInscripciones
+WITH p, max(totalInscripciones) AS maximoInscripciones
+MATCH (u:Usuario)-[:RESIDE_EN]->(p),
+      (u)-[:INSCRITO_EN]->(c:Curso)
+WITH p, c, maximoInscripciones, count(*) AS totalInscripciones
+WHERE totalInscripciones = maximoInscripciones
+RETURN p.nombre AS pais,
+       c.titulo AS cursoMasPopular,
+       totalInscripciones;
+
+Etapas realizadas:
+1. El primer MATCH selecciona los usuarios que residen en el país indicado y los cursos en los que están inscritos.
+2. El primer WITH agrupa por país y curso; count(*) cuenta las inscripciones de cada curso.
+3. El segundo WITH obtiene el mayor número de inscripciones (max).
+4. El segundo MATCH repite el recorrido para volver a contar las inscripciones por curso.
+5. WHERE conserva el curso o cursos cuyo total es igual al máximo (si hay empate, se muestran todos).
+6. RETURN muestra el país, el curso más popular y su número de inscripciones.
+
+
+4. ¿Qué cursos están disponibles en más de tres países?
+Identificar los cursos con mayor cobertura internacional en la plataforma, es decir, aquellos
+habilitados para múltiples países.
+Permite evaluar la distribución global de contenidos, la internacionalización del catálogo y
+el alcance de las alianzas educativas.
+
+Solución:
+
+MATCH (c:Curso)-[:DISPONIBLE_EN]->(p:Pais)
+WITH c,
+     collect(DISTINCT p.nombre) AS paises,
+     count(*) AS totalPaises
+WHERE totalPaises > 3
+RETURN c.titulo AS curso,
+       totalPaises,
+       paises
+ORDER BY totalPaises DESC, curso;
+
+Etapas realizadas:
+1. MATCH obtiene cada curso y los países en los que está disponible.
+2. WITH agrupa por curso; collect(DISTINCT ...) construye la lista de países y count(*) cuenta cuántos son.
+3. WHERE conserva solo los cursos disponibles en más de tres países.
+4. RETURN muestra el curso, el total de países y la lista de países.
+5. ORDER BY ordena de mayor a menor cobertura y, en caso de empate, por título del curso.
+
+
+5. ¿Qué curso popular en el país de residencia de un usuario puede recomendársele, si
+aún no está inscrito?
+Sugerir cursos relevantes a partir de la popularidad local (en su país de residencia),
+priorizando aquellos en los que el usuario aún no está inscrito.
+Esta consulta contribuye a un sistema de recomendación contextualizado geográficamente,
+basado en preferencias colectivas nacionales.
+
+Solución:
+
+Opción 1: Según las inscripciones de los usuarios del mismo país
+
+MATCH (u:Usuario {usuarioId: "U01"})-[:RESIDE_EN]->(p:Pais)
+MATCH (otroUsuario:Usuario)-[:RESIDE_EN]->(p),
+      (otroUsuario)-[:INSCRITO_EN]->(c:Curso)
+WHERE otroUsuario <> u
+  AND NOT EXISTS {
+      MATCH (u)-[:INSCRITO_EN]->(c)
+  }
+WITH u,
+     p,
+     c,
+     collect(DISTINCT otroUsuario.nombre) AS inscritosDelPais,
+     count(*) AS totalInscripciones
+RETURN u.nombre AS usuario,
+       p.nombre AS paisResidencia,
+       c.titulo AS cursoRecomendado,
+       inscritosDelPais,
+       totalInscripciones
+ORDER BY totalInscripciones DESC, cursoRecomendado;
+
+Opción 2: Recomendando solo cursos que además están disponibles en el país del usuario
+
+MATCH (u:Usuario {usuarioId: "U01"})-[:RESIDE_EN]->(p:Pais)
+MATCH (otroUsuario:Usuario)-[:RESIDE_EN]->(p),
+      (otroUsuario)-[:INSCRITO_EN]->(c:Curso)-[:DISPONIBLE_EN]->(p)
+WHERE otroUsuario <> u
+  AND NOT EXISTS {
+      MATCH (u)-[:INSCRITO_EN]->(c)
+  }
+WITH u,
+     p,
+     c,
+     collect(DISTINCT otroUsuario.nombre) AS inscritosDelPais,
+     count(*) AS totalInscripciones
+RETURN u.nombre AS usuario,
+       p.nombre AS paisResidencia,
+       c.titulo AS cursoRecomendado,
+       inscritosDelPais,
+       totalInscripciones
+ORDER BY totalInscripciones DESC, cursoRecomendado;
+
+Etapas realizadas:
+1. El primer MATCH identifica al usuario que recibirá las recomendaciones y su país de residencia.
+2. El segundo MATCH obtiene los demás usuarios que residen en ese mismo país y los cursos en los que están inscritos
+   (en la Opción 2 se exige además que el curso esté disponible en ese país).
+3. WHERE excluye al usuario inicial y, con NOT EXISTS, descarta los cursos en los que ya está inscrito.
+4. WITH agrupa por usuario, país y curso. collect(DISTINCT ...) construye la lista de inscritos del país y count(*) cuenta las inscripciones.
+5. RETURN muestra el usuario, su país, el curso recomendado, quiénes lo cursan y el total de inscripciones.
+6. ORDER BY ordena de mayor a menor popularidad y, en caso de empate, por título del curso.
+
+
+6. ¿Qué cursos se pueden recomendar a un usuario según las categorías que ha cursado
+previamente?
+Generar recomendaciones personalizadas por afinidad temática, analizando las categorías
+de los cursos ya cursados por el usuario y sugiriendo otros cursos relacionados.
+Es una estrategia de aprendizaje adaptativo, que fortalece la personalización de la
+experiencia educativa.
+
+Solución:
+
+MATCH (u:Usuario {usuarioId: "U01"})-[:INSCRITO_EN]->(c:Curso)-[:PERTENECE_A]->(cat:Categoria),
+      (recomendado:Curso)-[:PERTENECE_A]->(cat)
+WHERE NOT EXISTS {
+    MATCH (u)-[:INSCRITO_EN]->(recomendado)
+}
+RETURN u.nombre AS usuario,
+       cat.nombre AS categoria,
+       recomendado.titulo AS cursoRecomendado,
+       recomendado.nivel AS nivel,
+       recomendado.calificacionPromedio AS calificacionPromedio,
+       count(*) AS cursosPreviosEnCategoria
+ORDER BY cursosPreviosEnCategoria DESC, calificacionPromedio DESC, cursoRecomendado;
+
+Etapas realizadas:
+1. MATCH obtiene los cursos en los que está inscrito el usuario, sus categorías y los demás cursos de esas mismas categorías.
+2. WHERE NOT EXISTS descarta los cursos en los que el usuario ya está inscrito.
+3. RETURN agrupa por usuario, categoría y curso recomendado; count(*) cuenta cuántos cursos ha tomado
+   el usuario en esa categoría (nivel de afinidad).
+4. ORDER BY ordena por afinidad, luego por calificación promedio y, en caso de empate, por título del curso.
+
+
+7. ¿Qué cursos han cursado otros usuarios con historial de inscripción similar, y que el
+usuario aún no ha cursado?
+Implementar un mecanismo de recomendación colaborativa (similar a los sistemas de
+"usuarios parecidos") identificando cursos comunes entre perfiles con historiales de
+inscripción similares.
+Busca descubrir nuevos cursos potencialmente interesantes basados en comportamientos
+de otros estudiantes con intereses afines.
+
+Solución:
+
+MATCH (u:Usuario {usuarioId: "U01"})-[:INSCRITO_EN]->(c:Curso)
+      <-[:INSCRITO_EN]-(similar:Usuario)-[:INSCRITO_EN]->(recomendado:Curso)
+WHERE similar <> u
+  AND NOT EXISTS {
+      MATCH (u)-[:INSCRITO_EN]->(recomendado)
+  }
+WITH u,
+     recomendado,
+     collect(DISTINCT similar.nombre) AS usuariosSimilares,
+     collect(DISTINCT c.titulo) AS cursosEnComun,
+     count(*) AS coincidencias
+RETURN u.nombre AS usuario,
+       recomendado.titulo AS cursoRecomendado,
+       usuariosSimilares,
+       cursosEnComun,
+       coincidencias
+ORDER BY coincidencias DESC, cursoRecomendado;
+
+Etapas realizadas:
+1. MATCH identifica al usuario, los cursos en los que está inscrito, los otros usuarios inscritos en esos
+   mismos cursos (usuarios similares) y los demás cursos que esos usuarios han cursado.
+2. WHERE excluye al usuario inicial y, con NOT EXISTS, descarta los cursos en los que ya está inscrito.
+3. WITH agrupa por usuario y curso recomendado. collect(DISTINCT ...) construye la lista de usuarios similares
+   y de cursos en común; count(*) cuenta las coincidencias (un usuario que comparte más cursos suma más).
+4. RETURN muestra el usuario, el curso recomendado, quiénes lo respaldan, los cursos en común y las coincidencias.
+5. ORDER BY ordena de mayor a menor número de coincidencias y, en caso de empate, por título del curso.
